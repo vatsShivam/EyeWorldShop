@@ -159,6 +159,7 @@ renderProduct() {
        doctorDiscount,
        patientDiscount,
        category,
+       price,
      } = element; 
    
      return (
@@ -185,6 +186,7 @@ renderProduct() {
          </div>
        </div>
        <h2 className="product-name my-4">{name}</h2>
+       <h2 className="product-name my-4" style={{color:"#39AACD"}}> INR {price}</h2>
      </Col>
      );
    });
@@ -226,9 +228,9 @@ renderProduct() {
   return(
     <React.Fragment>
       <SearchBanner 
-        bannerName="Achromatic Optical"
-        bannerHint="Lenses"
-        currentPage="Optical Lens"
+        bannerName="Achromatic Lens and"
+        bannerHint="Eye Wear"
+        currentPage="Brand Page"
       />
 
 <React.Fragment>
@@ -292,13 +294,18 @@ renderProduct() {
       <section className="search-results py-5">
         <Container>
           <div className="d-md-flex d-lg-flex justify-content-between aign-items-center">
-<h1 className="mb-0"><span>{this.state.brand}</span></h1>
+<h1 className="mb-0"><span>{this.state.brand == 0 ? 'ALL Brand' : this.state.brand }</span></h1>
             <div className="results-Showing">Showing {this.state.count2} of {this.state.count1 +" "}</div>
           </div>
-
+          { this.state.count2 > 0 ? 
           <Row>
           {this.renderProduct()}
           </Row>
+             :
+             <div style = {{alignSelf : 'center'}}>
+               No Products Found 
+             </div>
+              }
           <Col>
          <div  className="pager d-flex justify-content-center py-5">
          {paginationElement}

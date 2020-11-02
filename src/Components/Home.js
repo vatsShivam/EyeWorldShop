@@ -21,12 +21,38 @@ import axios from "axios";
 import {connect} from 'react-redux';
 
 class Home extends PureComponent{
-   state={
-       istoken:localStorage.getItem('token'),
+    state={
+        istoken:localStorage.getItem('token'),
+               bannerPics : [],
+       
+ 
+    }
+   
+ componentDidMount()
+ {
+     this.getAllBanner()
+ }
+   
+   getAllBanner()
+   {
+     axios
+ 
+     .get(
+       "http://111.93.169.90:4011/getAllBanner/"
+ 
       
-
-   }
-  
+     )
+     .then((resp) => {
+       this.setState({bannerPics : resp.data.data})
+     
+    
+ 
+     })
+ 
+     .catch((error) => {
+       console.log(error);
+     });
+   } 
   
   
     render(){
@@ -173,21 +199,18 @@ return(
             <section className="advertise-section">
                 <Container>
                     <Row>
-                        <Col sm="4" className="my-3">
-                            <div className="adImage">
-                                <img src={Advertise1} alt='' className='img-fluid'></img>
-                            </div>
-                        </Col>
-                        <Col sm="4" className="my-3">
-                            <div className="adImage">
-                                <img src={Advertise2} alt='' className='img-fluid'></img>
-                            </div>
-                        </Col>
-                        <Col sm="4" className="my-3">
-                            <div className="adImage">
-                                <img src={Advertise3} alt='' className='img-fluid'></img>
-                            </div>
-                        </Col>
+                    {this.state.bannerPics !== null &&  this.state.bannerPics.length !== 0
+                              ?
+                              this.state.bannerPics.map((data,index) =>
+                              index < 3 ? 
+                              <Col sm="4" className="my-3">
+                              <div className="adImage">
+                                  <img src={data.pic} alt='' className='img-fluid'></img>
+                              </div>
+                          </Col>  
+                                  : null
+                              )
+                              : null }
                     </Row>
                 </Container>
             </section>
