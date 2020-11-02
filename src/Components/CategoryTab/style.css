@@ -1,0 +1,22 @@
+.customTab{
+    justify-content: center;
+    border-bottom: none !important;
+    margin-bottom: 40px !important;
+}
+.customTab.nav-tabs .nav-item{
+    margin-right: 5px;
+}
+.customTab.nav-tabs .nav-link{
+    border: 1px solid #b1dbe6;
+    border-radius: 1px;
+    color:#032632;
+    font-weight: 500;
+    font-size: 16px;
+    padding: .7rem 1.1rem;
+    cursor: pointer;
+}
+.customTab.nav-tabs .nav-link.active {
+    border: 1px solid #b1dbe6;
+    background: #b1dbe6;
+    color:#032632;
+}
