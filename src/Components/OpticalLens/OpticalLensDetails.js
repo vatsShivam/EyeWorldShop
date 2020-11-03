@@ -40,11 +40,12 @@ class  OpticalLensDetails extends PureComponent{
     patientPriceStock:"",
     storemrp:"",
     quantity:"",
+    power : [],
   }
   componentWillMount() {
     window.scrollTo(0, 0)
    this.getDetail();
-   this.getBrand()
+   this.getBrand();
   }
   handleQuantity = (e) => {
     this.setState({quantity:e.target.value})
@@ -102,17 +103,15 @@ var patientfinal =patie*e.target.value;
 
   
   }
-  renderPower=(e)=>{
-   
-    const min=parseFloat(this.state.minPower)
-    const max=parseFloat(this.state.maxPower)
-   
-    for(var i=min;i<=max;i=i+.25 ){
-                              
-        this.state.arr.push(i)
-         }
-     
-     }
+  renderPower = (e) => {
+    const min = parseFloat(this.state.minPower);
+    const max = parseFloat(this.state.maxPower);
+    const j = max > min ? max : min ;
+    const k = min < max ? min : max 
+    for (var i = k; i <= j; i = i + 0.25) 
+      this.state.arr.push(i);
+
+  };
   getDetail() {
     axios
 
@@ -170,6 +169,9 @@ var patientfinal =patie*e.target.value;
         this.setState({cylinder:cylin})
         const lentype=obj.lensType.split(",");
         this.setState({lensType:lentype})
+        const pow = obj.power.split(",");
+        this.setState({power : pow});
+
       
        // const obj = JSON.parse(resp.data.attributes);
        // console.log(obj.minPower)
@@ -411,13 +413,24 @@ var patientfinal =patie*e.target.value;
                         
                         -- Select Power --
                       </option>
-                    {
-      this.state.arr.map(function(user) {
-        return <option key={user}
-          value={user}>{user}</option>;
-      })
-    }
-    }
+                      { this.state.arr.length !== 0 ? 
+                     this.state.arr.map(function (user) {
+                        return (
+                          <option key={user} value={user}>
+                            {user}
+                          </option>
+                        );
+                     })
+                     :  
+                     this.state.power.map(function (user) {
+                      return (
+                        <option key={user} value={user}>
+                          {user}
+                        </option>
+                      );
+                   })  
+                    
+                    }
                       </Input>
                 </FormGroup>
                 <FormGroup className="mb-4">

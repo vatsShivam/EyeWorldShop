@@ -69,6 +69,7 @@ class ContactLensDetails extends PureComponent {
     description: "",
     leftquantity:"",
     rightquantity:"",
+    power : [],
   };
 
   componentWillMount() {
@@ -324,6 +325,9 @@ if(this.state.pat === "patient"){
         this.setState({ color: colo });
         const dia = obj.diameter.split(",");
         this.setState({ diameter: dia });
+        const pow = obj.power.split(",");
+        console.log(obj.power);
+        this.setState({power:pow});
         this.setState({
           product_id: resp.data._id,
           lens_category: resp.data.category,
@@ -383,10 +387,11 @@ if(this.state.pat === "patient"){
   renderPower = (e) => {
     const min = parseFloat(this.state.minPower);
     const max = parseFloat(this.state.maxPower);
-
-    for (var i = min; i <= max; i = i + 0.25) {
+    const j = max > min ? max : min ;
+    const k = min < max ? min : max 
+    for (var i = k; i <= j; i = i + 0.25) 
       this.state.arr.push(i);
-    }
+
   };
   toggle = (event, isin) => {
     //this.setState(prevState => ({ modal: !prevState.modal }));
@@ -396,6 +401,7 @@ if(this.state.pat === "patient"){
 
   render() {
     //const pat=localStorage.getItem('patient_account');
+    console.log(this.state.power,'aaa');
     console.log(this.state.productPic3);
     return (
       <React.Fragment>
@@ -578,14 +584,26 @@ if(this.state.pat === "patient"){
                       id="manufacturer-name"
                     >
                       <option value=""> -- Select power -- </option>
-                      {this.state.arr.map(function (user) {
+                      
+                      
+                     { this.state.arr.length !== 0 ? 
+                     this.state.arr.map(function (user) {
                         return (
                           <option key={user} value={user}>
                             {user}
                           </option>
                         );
-                      })}
-                      }
+                     })
+                     :  
+                     this.state.power.map(function (user) {
+                      return (
+                        <option key={user} value={user}>
+                          {user}
+                        </option>
+                      );
+                   })  
+                    
+                    }
                     </select>
                   </FormGroup>
                   <FormGroup className="mb-4">
@@ -731,9 +749,24 @@ if(this.state.pat === "patient"){
                       stlye={{ height: "40px", overFlow: "scroll" }}
                     >
                       <option value="">-- Select power --</option>
-                      {this.state.arr.map(function (user) {
-                        return <option value={user}>{user}</option>;
-                      })}
+                      { this.state.arr.length !== 0 ? 
+                     this.state.arr.map(function (user) {
+                        return (
+                          <option key={user} value={user}>
+                            {user}
+                          </option>
+                        );
+                     })
+                     :  
+                     this.state.power.map(function (user) {
+                      return (
+                        <option key={user} value={user}>
+                          {user}
+                        </option>
+                      );
+                   })  
+                    
+                    }
                     </select>
                   </FormGroup>
                   <FormGroup className="mb-4">
