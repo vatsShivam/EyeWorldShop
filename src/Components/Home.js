@@ -1,5 +1,5 @@
 import React ,{PureComponent,} from 'react';
-import { Redirect, push } from "react-router-dom";
+import { Redirect, push, Link, NavLink } from "react-router-dom";
 import { Container, Row, Col, Button} from 'reactstrap';
 import brand1 from '../assets/imgs/brand-1.jpg';
 import brand2 from '../assets/imgs/brand-2.jpg';
@@ -24,13 +24,17 @@ class Home extends PureComponent{
     state={
         istoken:localStorage.getItem('token'),
                bannerPics : [],
+               products : [],
+               count : 0,
+               trendingProducts : [],
        
  
     }
    
  componentDidMount()
  {
-     this.getAllBanner()
+     this.getAllBanner();
+     this.getAllProducts();
  }
    
    getAllBanner()
@@ -53,10 +57,40 @@ class Home extends PureComponent{
        console.log(error);
      });
    } 
-  
+   getAllProducts()
+   {
+     axios
+ 
+     .get(
+       "http://111.93.169.90:4011/getallProduct/"
+ 
+      
+     )
+     .then((resp) => {
+       this.setState({products : resp.data.data})
+     
+    
+ 
+     })
+ 
+     .catch((error) => {
+       console.log(error);
+     });
+     var arr = []
+     for(var i=0 ; i<this.state.products.length ; i++)
+     {
+         if(this.state.products[i].isTrending === true)
+         { console.log(this.state.products[i],'yesss')
+            arr.push(this.state.products[i]);
+         }
+     }
+     console.log(arr,'allll')
+     this.setState({trendingProducts : arr});
+   }
   
     render(){
         console.log(this.props.myName.isNav)
+        console.log(this.state.trendingProducts,'all');
      /*   if(this.state.istoken!==null){
             return <Redirect to="/Profile" />;
           }
@@ -114,51 +148,33 @@ return(
                         <Col lg="12">
                             <h1 className="colored-title">Trending <span>Product</span></h1>
                         </Col>
+                        
+                        { this.state.products.length > 0 ?
+                        this.state.products.map((data,index) => 
+                        ( data.isTrending === true && index < 5 ? 
                         <Col md="4" className='my-2'>
                             <div className="item-box">
                                 <div className="image-area mb-3">
-                                    <img src={product1} alt=''></img>
+                          <NavLink to = {data.category === 'Contact Lens' ? "/ContactLensDetails/" + data._id : 
+                        data.category === 'Optical Lens' ? "/OpticalLensDetails/" + data._id : 
+                        data.category === 'Eye Wear' ? "/EyeWearDetails/" + data._id :
+                        "/AccessoryDetails/" + data._id }> 
+                          <img src={data.productPic[0]} alt=''></img> </NavLink>
                                     <div className="triangle">
-                                        <p><span>5%</span> for Patients</p>
+                            <p><span>{data.patientDiscount}%</span>for Patients</p>
                                     </div>
                                     <div className="red-star">
-                                        <p><span>30%</span> for Doctors</p>
+                            <p><span>{data.doctorDiscount}%</span>for Doctors</p>
                                     </div>
                                 </div>
-                                <p className="prod-name text-center">Product Name goes here</p>
-                                <p className="prod-price text-center"><span>$</span> 350.00</p>
+                        <p className="prod-name text-center">{data.name}</p>
+                        <p className="prod-price text-center"><span>INR</span>{data.price}</p>
                             </div>
                         </Col>
-                        <Col md="4" className='my-2'>
-                            <div className="item-box">
-                                <div className="image-area mb-3">
-                                    <img src={product2} alt=''></img>
-                                    <div className="triangle">
-                                        <p><span>5%</span> for Patients</p>
-                                    </div>
-                                    <div className="red-star">
-                                        <p><span>30%</span> for Doctors</p>
-                                    </div>
-                                </div>
-                                <p className="prod-name text-center">Product Name goes here</p>
-                                <p className="prod-price text-center"><span>$</span> 350.00</p>
-                            </div>
-                        </Col>
-                        <Col md="4" className='my-2'>
-                            <div className="item-box">
-                                <div className="image-area mb-3">
-                                    <img src={product3} alt=''></img>
-                                    <div className="triangle">
-                                        <p><span>5%</span> for Patients</p>
-                                    </div>
-                                    <div className="red-star">
-                                        <p><span>30%</span> for Doctors</p>
-                                    </div>
-                                </div>
-                                <p className="prod-name text-center">Product Name goes here</p>
-                                <p className="prod-price text-center"><span>$</span> 350.00</p>
-                            </div>
-                        </Col>
+                        : null  
+                        )) 
+                        : null}
+                        <NavLink to = {"/TrendingProduct"}><h5>More</h5></NavLink>
                     </Row>
                 </Container>
             </section>
