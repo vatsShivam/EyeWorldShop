@@ -181,11 +181,37 @@ return(
             
             <section className="featured-product">
                 <Container>
-                    <Row>
+                <Row>
                         <Col lg="12">
                             <h1 className="colored-title">Featured <span>Product</span></h1>
-                            <Owlcarausel />
                         </Col>
+                        
+                        { this.state.products.length > 0 ?
+                        this.state.products.map((data,index) => 
+                        ( data.isFeatured === true && index < 5 ? 
+                        <Col md="4" className='my-2'>
+                            <div className="item-box">
+                                <div className="image-area mb-3">
+                          <NavLink to = {data.category === 'Contact Lens' ? "/ContactLensDetails/" + data._id : 
+                        data.category === 'Optical Lens' ? "/OpticalLensDetails/" + data._id : 
+                        data.category === 'Eye Wear' ? "/EyeWearDetails/" + data._id :
+                        "/AccessoryDetails/" + data._id }> 
+                          <img src={data.productPic[0]} alt=''></img> </NavLink>
+                                    <div className="triangle">
+                            <p><span>{data.patientDiscount}%</span>for Patients</p>
+                                    </div>
+                                    <div className="red-star">
+                            <p><span>{data.doctorDiscount}%</span>for Doctors</p>
+                                    </div>
+                                </div>
+                        <p className="prod-name text-center">{data.name}</p>
+                        <p className="prod-price text-center"><span>INR</span>{data.price}</p>
+                            </div>
+                        </Col>
+                        : null  
+                        )) 
+                        : null}
+                        <NavLink to = {"/FeaturedProduct"}><h5>More</h5></NavLink>
                     </Row>
                 </Container>
             </section>

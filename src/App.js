@@ -23,6 +23,7 @@ import EyeWearDetails from './Components/EyeWear/EyeWearDetails';
 import BrandList from './Components/BrandList/BrandList';
 import Cart from './Components/Cart';
 import TrendingProducts from './Components/TrendingProduct/TrendingProduct';
+import FeaturedProduct from './Components/FeaturedProduct/FeaturedProduct';
 
 import {
   BrowserRouter as Router,
@@ -58,6 +59,7 @@ const App = () => {
       <Route exact path="/Cart" component={Cart} />
       <Route exact path="/Brand" component={BrandList} />
       <Route exact path="/TrendingProduct" component={TrendingProducts} />
+      <Route exact path="/FeaturedProduct" component={FeaturedProduct} />
     </Switch>
     <Footer />
     </React.Fragment>
