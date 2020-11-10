@@ -27,6 +27,8 @@ class Home extends PureComponent{
                products : [],
                count : 0,
                FeaturedProducts : [],
+               pat:localStorage.getItem('patient_account'),
+               doc:localStorage.getItem('docs_account'),
        
  
     }
@@ -166,24 +168,27 @@ return(
                         data.category === 'Eye Wear' ? "/EyeWearDetails/" + data._id :
                         "/AccessoryDetails/" + data._id }> 
                           <img src={data.productPic[0]} alt=''></img> </NavLink>
-                                   {data.patientDiscount  ?  <div className="triangle">
+                                   {data.patientDiscount  && this.state.pat==='patient' ?  
+                                   <div className="triangle">
                                     
                             <p><span>{data.patientDiscount}%</span>for Patients</p>
                                     </div>  : null}
-                                  {data.doctorDiscount  ?  
+                                  {data.doctorDiscount && this.state.doc==='doctor' ?  
                                    <div className="red-star">
                             <p><span>{data.doctorDiscount}%</span>for Doctors</p>
                         </div>  : null}
                                 </div>
                         <p className="prod-name text-center">{data.name}</p>
-                        <p className="prod-price text-center"><span>INR</span>{data.price}</p>
+                        <p className="prod-price text-center"><span>K </span>{data.price}</p>
                             </div>
                         </Col>
                         : null  
                         )) 
                         : null}
-                        <Row style = {{marginLeft : '93%'}}>
-                        <NavLink to = {"/TrendingProduct"}><h4>More</h4></NavLink>
+                        <Row style = {{marginLeft : '45%'}}>
+                        <NavLink to = {"/TrendingProduct"}><Button style = {{borderRadius : 50 ,width : 150 ,
+                            borderColor : '#000',backgroundColor : '#fff',
+                             color : 'black',borderWidth : 1.5 }}>View More</Button></NavLink>
                         </Row>
                     </Row>
                 </Container>
@@ -193,9 +198,8 @@ return(
                 <Container>
                 <Row>
                         <Col lg="12">
-                            <h1 className="colored-title">Featured <span>Product</span></h1>
-                        </Col>
-                        
+                            <h6 className="colored-title">Featured <span>Product</span></h6>
+                       </Col>
                         { this.state.FeaturedProducts.length > 0 ?
                         this.state.FeaturedProducts.map((data,index) => 
                         ( data.isFeatured === true && index < 3 ? 
@@ -207,26 +211,28 @@ return(
                         data.category === 'Eye Wear' ? "/EyeWearDetails/" + data._id :
                         "/AccessoryDetails/" + data._id }> 
                           <img src={data.productPic[0]} alt=''></img> </NavLink>
-                          {data.patientDiscount ? <div className="triangle">
+                          {data.patientDiscount  && this.state.pat==='patient' ?  
+                                   <div className="triangle">
                                     
-                                    <p><span>{data.patientDiscount}%</span>for Patients</p>
-                                            </div>  : null}
-                                          {data.doctorDiscount  ?  
-                                           <div className="red-star">
-                                    <p><span>{data.doctorDiscount}%</span>for Doctors</p>
-                                </div>  : null}
+                            <p><span>{data.patientDiscount}%</span>for Patients</p>
+                                    </div>  : null}
+                                  {data.doctorDiscount && this.state.doc==='doctor' ?  
+                                   <div className="red-star">
+                            <p><span>{data.doctorDiscount}%</span>for Doctors</p>
+                        </div>  : null}
                                 </div>
                         <p className="prod-name text-center">{data.name}</p>
-                        <p className="prod-price text-center"><span>INR</span>{data.price}</p>
+                        <p className="prod-price text-center"><span>K </span>{data.price}</p>
                             </div>
                         </Col>
                         : null  
                         )) 
                         : null}
-                        <Row style = {{marginLeft : '93%'}}>
-                        <NavLink to = {"/FeaturedProduct"}><h4>More</h4></NavLink>
+                        <Row style = {{marginLeft : '45%'}}>
+                        <NavLink to = {"/FeaturedProduct"}><Button style = {{borderRadius : 50 ,width : 150 ,
+                            borderColor : '#000',backgroundColor : '#fff',
+                             color : 'black',borderWidth : 1.5 }}>View More</Button></NavLink>
                         </Row>
-                        {/* <NavLink to = {"/FeaturedProduct"}><h4>More</h4></NavLink> */}
                     </Row>
                 </Container>
             </section>

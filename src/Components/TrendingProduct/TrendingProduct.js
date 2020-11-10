@@ -32,7 +32,7 @@ state={
 }
 
 componentWillMount() {
-
+  window.scrollTo(0, 0)
   this.getOpticalList();
  // this.getBrand();
 }
