@@ -26,7 +26,7 @@ class Home extends PureComponent{
                bannerPics : [],
                products : [],
                count : 0,
-               trendingProducts : [],
+               FeaturedProducts : [],
        
  
     }
@@ -57,37 +57,43 @@ class Home extends PureComponent{
        console.log(error);
      });
    } 
-   getAllProducts()
-   {
-     axios
- 
-     .get(
-       "http://111.93.169.90:4011/getallProduct/"
- 
-      
-     )
-     .then((resp) => {
-       this.setState({products : resp.data.data})
-     
+   getAllProducts() {
+       
     
- 
-     })
- 
-     .catch((error) => {
-       console.log(error);
-     });
-     var arr = []
-     for(var i=0 ; i<this.state.products.length ; i++)
-     {
-         if(this.state.products[i].isTrending === true)
-         { console.log(this.state.products[i],'yesss')
-            arr.push(this.state.products[i]);
-         }
-     }
-     console.log(arr,'allll')
-     this.setState({trendingProducts : arr});
-   }
+    axios
+      .get(
+      "http://111.93.169.90:4011/getallProduct/"
   
+      )
+      .then((resp) => {
+        console.log(resp.data)
+        var arr = []
+        var arr1 = []
+        for(var i =0; i<resp.data.data.length; i++)
+      {
+          if(resp.data.data[i].isTrending === true)
+          {
+              arr.push(resp.data.data[i])
+              // this.setState({ opticalLensList : [...this.state.opticalLensList, resp.data.data[i]] }) //simple value  
+          }
+          if(resp.data.data[i].isFeatured === true)
+          {
+              arr1.push(resp.data.data[i])
+              // this.setState({ opticalLensList : [...this.state.opticalLensList, resp.data.data[i]] }) //simple value  
+          }
+      }
+      console.log(this.state.products,'all');
+       this.setState({products:arr})
+       this.setState({FeaturedProducts:arr1})
+      // this.setState({count1:resp.data.count})
+       //this.setState({count2:this.state.opticalLensList.length})
+  
+      })
+  
+      .catch((error) => {
+        console.log(error);
+      });
+  }  
     render(){
         console.log(this.props.myName.isNav)
         console.log(this.state.trendingProducts,'all');
@@ -151,7 +157,7 @@ return(
                         
                         { this.state.products.length > 0 ?
                         this.state.products.map((data,index) => 
-                        ( data.isTrending === true && index < 5 ? 
+                        ( data.isTrending === true && index < 3 ? 
                         <Col md="4" className='my-2'>
                             <div className="item-box">
                                 <div className="image-area mb-3">
@@ -160,12 +166,14 @@ return(
                         data.category === 'Eye Wear' ? "/EyeWearDetails/" + data._id :
                         "/AccessoryDetails/" + data._id }> 
                           <img src={data.productPic[0]} alt=''></img> </NavLink>
-                                    <div className="triangle">
+                                   {data.patientDiscount  ?  <div className="triangle">
+                                    
                             <p><span>{data.patientDiscount}%</span>for Patients</p>
-                                    </div>
-                                    <div className="red-star">
+                                    </div>  : null}
+                                  {data.doctorDiscount  ?  
+                                   <div className="red-star">
                             <p><span>{data.doctorDiscount}%</span>for Doctors</p>
-                                    </div>
+                        </div>  : null}
                                 </div>
                         <p className="prod-name text-center">{data.name}</p>
                         <p className="prod-price text-center"><span>INR</span>{data.price}</p>
@@ -174,7 +182,9 @@ return(
                         : null  
                         )) 
                         : null}
-                        <NavLink to = {"/TrendingProduct"}><h5>More</h5></NavLink>
+                        <Row style = {{marginLeft : '93%'}}>
+                        <NavLink to = {"/TrendingProduct"}><h4>More</h4></NavLink>
+                        </Row>
                     </Row>
                 </Container>
             </section>
@@ -186,9 +196,9 @@ return(
                             <h1 className="colored-title">Featured <span>Product</span></h1>
                         </Col>
                         
-                        { this.state.products.length > 0 ?
-                        this.state.products.map((data,index) => 
-                        ( data.isFeatured === true && index < 5 ? 
+                        { this.state.FeaturedProducts.length > 0 ?
+                        this.state.FeaturedProducts.map((data,index) => 
+                        ( data.isFeatured === true && index < 3 ? 
                         <Col md="4" className='my-2'>
                             <div className="item-box">
                                 <div className="image-area mb-3">
@@ -197,12 +207,14 @@ return(
                         data.category === 'Eye Wear' ? "/EyeWearDetails/" + data._id :
                         "/AccessoryDetails/" + data._id }> 
                           <img src={data.productPic[0]} alt=''></img> </NavLink>
-                                    <div className="triangle">
-                            <p><span>{data.patientDiscount}%</span>for Patients</p>
-                                    </div>
-                                    <div className="red-star">
-                            <p><span>{data.doctorDiscount}%</span>for Doctors</p>
-                                    </div>
+                          {data.patientDiscount ? <div className="triangle">
+                                    
+                                    <p><span>{data.patientDiscount}%</span>for Patients</p>
+                                            </div>  : null}
+                                          {data.doctorDiscount  ?  
+                                           <div className="red-star">
+                                    <p><span>{data.doctorDiscount}%</span>for Doctors</p>
+                                </div>  : null}
                                 </div>
                         <p className="prod-name text-center">{data.name}</p>
                         <p className="prod-price text-center"><span>INR</span>{data.price}</p>
@@ -211,7 +223,10 @@ return(
                         : null  
                         )) 
                         : null}
-                        <NavLink to = {"/FeaturedProduct"}><h5>More</h5></NavLink>
+                        <Row style = {{marginLeft : '93%'}}>
+                        <NavLink to = {"/FeaturedProduct"}><h4>More</h4></NavLink>
+                        </Row>
+                        {/* <NavLink to = {"/FeaturedProduct"}><h4>More</h4></NavLink> */}
                     </Row>
                 </Container>
             </section>
