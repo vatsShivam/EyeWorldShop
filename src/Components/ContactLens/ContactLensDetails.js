@@ -69,22 +69,32 @@ class ContactLensDetails extends PureComponent {
     description: "",
     leftquantity:"",
     rightquantity:"",
+    id: this.props.match.params.id,
   };
 
   componentWillMount() {
     window.scrollTo(0, 0);
+ 
 
     //console.log(localStorage.getItem('patient_account'));
   }
   componentDidMount() {
     this.getDetail();
+   
   }
-  componentDidUpdate(prevState) {
+  componentDidUpdate(prevProps,prevState) {
     if (
       this.state.minPower !== prevState.minPower &&
       this.state.arr.length === 0
     ) {
       this.renderPower();
+      
+    }
+   // if(prevProps!==this.props){
+    //  this.getDetail()
+    //}
+    if(this.state.id!==this.props.match.params.id){
+      this.getDetail()
     }
   }
   handlenull=()=>{

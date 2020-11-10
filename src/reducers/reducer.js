@@ -1,6 +1,7 @@
 const isState={
     name:"Diwakar",
-    isNav:false
+    isNav:false,
+    addCart:[],
   
 }
 
@@ -26,6 +27,12 @@ const reducer=(state=isState,action )=>{
             }
           }
         
+    }
+    if(action.type==="Add Cart"){
+
+      return {
+        addedItems: [...state.addedItems, action.payload], 
+      }
     }
     
   return state
