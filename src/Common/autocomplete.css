@@ -1,0 +1,17 @@
+.react-autosuggest__suggestions-list {
+    margin: 0;
+    padding:0px;
+    list-style-type: none;
+    
+    
+  }
+  
+  .sugg-option {
+    display: flex;
+    padding:15px;
+  }
+  .icon-wrap img {
+    width: 50px;
+    margin-right: 10px;
+  }
+  

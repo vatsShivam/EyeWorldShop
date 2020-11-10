@@ -24,10 +24,12 @@ import phoneIcon from '../assets/imgs/phone.png';
 import searchIcon from '../assets/imgs/search.png';
 import cartIcon from '../assets/imgs/cart.png';
 import modalClose from '../assets/imgs/close.png';
-
+import { Drawer,} from 'antd';
+import { PlusOutlined } from '@ant-design/icons';
 // import Signup from '../Components/Signup';
-
-import { NavLink} from 'react-router-dom';
+import Autosuggest from 'react-autosuggest';
+import './autocomplete.css';
+import { NavLink,Link} from 'react-router-dom';
 import { ImagePath } from '../ImagePath';
 
 
@@ -52,7 +54,10 @@ class Header extends PureComponent{
         logout:false,
         isref:false,
         ram:localStorage.getItem('token'),
-        myAccount:false
+        myAccount:false,
+        visible:false,
+        value: '',
+        suggestions: []
       
        };
     componentWillUpdate(){
@@ -158,6 +163,20 @@ class Header extends PureComponent{
        
 
       }
+      showDrawer = () => {
+        this.setState({
+          visible: true,
+          value:""
+        });
+      };
+    
+      onClose = () => {
+        this.setState({
+          visible: false,
+          value:""
+        });
+      };
+    
     
       componentDidMount(){
         if(this.state.ram!==null){
@@ -166,7 +185,94 @@ class Header extends PureComponent{
           
           
       }
+      getSuggestions = async (value) => {
+       
+        let response = await fetch(`http://111.93.169.90:4011/searchProduct?search=${value}`);
+        let data = await response.json()
+        return data;
+    };
+
+    // Trigger suggestions
+    getSuggestionValue = suggestion => suggestion.name;
+
+    // Render Each Option
+    
+  
+    renderSuggestion = (suggestion) => {
+        
+        
+   if(suggestion.category==='Contact Lens'){
+      return (
+        <span className="sugg-option" >
+            
+        <Link  to={"/ContactLensDetails/" +suggestion._id} onClick={this.onClose}>
+             <span className="icon-wrap"><img src={suggestion.productPic[0]} /></span>
+         <span className="name">
+             {suggestion.name}
+         </span>
+         </Link>
+     </span>
+
+     )}
+     if(suggestion.category==='Optical Lens'){
+      return (
+        <span className="sugg-option" >
+            
+        <Link  to={"/OpticalLensDetails/" +suggestion._id} onClick={this.onClose}>
+             <span className="icon-wrap"><img src={suggestion.productPic[0]} /></span>
+         <span className="name">
+             {suggestion.name}
+         </span>
+         </Link>
+     </span>
+
+     )}
+      }
+    
+      
+        
+    
+
+    // OnChange event handler
+    onChange = (event, { newValue }) => {
+        this.setState({
+            value: newValue
+        });
+    };
+
+    // Suggestion rerender when user types
+    onSuggestionsFetchRequested = ({ value }) => {
+        this.getSuggestions(value)
+            .then(data => {
+                if (data.Error) {
+                    this.setState({
+                        suggestions: []
+                    });
+                } else {
+                    this.setState({
+                        suggestions: data.data
+                    });
+                }
+            })
+    };
+
+    // Triggered on clear
+    onSuggestionsClearRequested = () => {
+        this.setState({
+            suggestions: []
+        });
+    };
+
  render(){
+  const { value, suggestions } = this.state;
+
+  // Option props
+  const inputProps = {
+      placeholder: 'Type Product Name',
+      value,
+      onChange: this.onChange,
+     style:{height:"40px",border:"2px solid white",borderRadius:"5px"}
+  };
     console.log(this.state.signout)
          if(this.props.myName.isNav===false){
     if (this.state.logout===true) {
@@ -179,7 +285,36 @@ class Header extends PureComponent{
     
     <div>
            
+           <Drawer
+          title="Product Search"
+          width={500}
+          onClose={this.onClose}
+          visible={this.state.visible}
+          bodyStyle={{ paddingBottom: 80 }}
+          footer={
+            <div
+              style={{
+                textAlign: 'right',
+              }}
+            >
+           
+       
+            </div>
+          }
+        >
+          <div className=" offset-sm-2 col-sm-10">
+              <Autosuggest
+                suggestions={suggestions}
+                onSuggestionsFetchRequested={this.onSuggestionsFetchRequested}
+                onSuggestionsClearRequested={this.onSuggestionsClearRequested}
+                getSuggestionValue={this.getSuggestionValue}
+                renderSuggestion={this.renderSuggestion}
+                inputProps={inputProps}
+              
+            />
+ </div>
 
+          </Drawer>
     <Modal isOpen={this.state.show} >
 <ModalBody className="blue-bg px-5">
  <img src={modalClose} alt="modal close"className="modal-close" onClick={this.handleHide} />
@@ -296,10 +431,10 @@ class Header extends PureComponent{
     fontWeight: "500",
    
                         }}>My Account</span></NavLink> }
-                          <Button color="link" className="search-icon"><img src={searchIcon} alt=""></img></Button>
+                          <Button color="link" className="search-icon"><img src={searchIcon} onClick={this.showDrawer} alt=""></img></Button>
                           <Button color="link" className="cart-icon">
                               <img src={cartIcon} alt=""></img>
-                              <span className="count">0</span>
+                              <span className="count">5</span>
                           </Button>
                       </div>
                   </Collapse>

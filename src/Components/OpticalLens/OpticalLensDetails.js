@@ -41,6 +41,7 @@ class  OpticalLensDetails extends PureComponent{
     storemrp:"",
     quantity:"",
     power : [],
+    id: this.props.match.params.id,
   }
   componentWillMount() {
     window.scrollTo(0, 0)
@@ -68,11 +69,18 @@ var patientfinal =patie*e.target.value;
 }
 
 };
+handleCart=(e)=>{
+  alert("HII")
+  e.preventDefault()
+}
   componentDidUpdate(prevState){
     if(this.state.minPower!==prevState.minPower && this.state.arr.length===0){
       this.renderPower()
     }
-  
+
+    if(this.state.id!==this.props.match.params.id){
+      this.getDetail()
+    }
   }
   getBrand() {
    
@@ -481,7 +489,7 @@ You Save : <span>$</span> <strong>{this.state.mrp-this.state.doctorPrice}</stron
           </Col>
           <Col xs={12} sm={12} md={6} lg={6}>
             <section className="d-flex justify-content-end mt-3 mt-md-0 mt-lg-0">
-              <button className="cart-btn"><FontAwesomeIcon icon={faShoppingCart} /> Add To Cart</button>
+              <button className="cart-btn" onClick={this.handleCart}><FontAwesomeIcon icon={faShoppingCart} /> Add To Cart</button>
               <button className="buy-btn ml-2">buy now</button>
             </section>
             <div className="d-flex justify-content-center my-4 blueLightBg py-3">
