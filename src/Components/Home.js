@@ -187,8 +187,8 @@ return(
                         : null}
                         <Row style = {{marginLeft : '45%'}}>
                         <NavLink to = {"/TrendingProduct"}><Button style = {{borderRadius : 50 ,width : 150 ,
-                            borderColor : '#000',backgroundColor : '#fff',
-                             color : 'black',borderWidth : 1.5 }}>View More</Button></NavLink>
+                            borderColor : '#000',backgroundColor : '#F4FEFF',
+                             color : '#46799E',borderWidth : 1.5 }}>View More</Button></NavLink>
                         </Row>
                     </Row>
                 </Container>
@@ -230,8 +230,8 @@ return(
                         : null}
                         <Row style = {{marginLeft : '45%'}}>
                         <NavLink to = {"/FeaturedProduct"}><Button style = {{borderRadius : 50 ,width : 150 ,
-                            borderColor : '#000',backgroundColor : '#fff',
-                             color : 'black',borderWidth : 1.5 }}>View More</Button></NavLink>
+                            borderColor : '#000',backgroundColor : '#F4FEFF',
+                             color : '#46799E',borderWidth : 1.5 }}>View More</Button></NavLink>
                         </Row>
                     </Row>
                 </Container>
